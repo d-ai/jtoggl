@@ -8,7 +8,7 @@
     <packaging>jar</packaging>
 
     <name>jtoggl-api</name>
-    <url>http://code.google.com/p/jtoggl/</url>
+    <url>https://github.com/bbaumgartner/jtoggl</url>
     
     <developers>
         <developer>
@@ -54,7 +54,7 @@
     </build>
             
     <scm>
-        <developerConnection>scm:svn:https://jtoggl.googlecode.com/svn/trunk/jtoggl-api</developerConnection>
+        <developerConnection>scm:git:https://github.com/bbaumgartner/jtoggl</developerConnection>
     </scm>
 
 	<distributionManagement>
