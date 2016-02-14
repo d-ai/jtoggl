@@ -3,6 +3,8 @@
  *
  * Copyright (C) 2011 by simas GmbH, Moosentli 7, 3235 Erlach, Switzerland
  * http://www.simas.ch
+ *
+ * Copyright 2016 Aleksandr Duplishchev https://github.com/d-ai
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +22,11 @@ package ch.simas.jtoggl;
 
 import static org.junit.Assert.assertTrue;
 
-import java.util.Calendar;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -32,6 +36,7 @@ import org.junit.Test;
 /**
  * 
  * @author Simon Martinelli
+ * @author Aleksandr Duplishchev
  */
 public class JTogglTest {
 
@@ -84,9 +89,8 @@ public class JTogglTest {
 
     @Test
     public void getTimeEntriesWithRange() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(2011, 11, 10);
-        List<TimeEntry> entries = jToggl.getTimeEntries(cal.getTime(), cal.getTime());
+        ZonedDateTime dt = ZonedDateTime.of(2011, 11, 10, 0, 0, 0, 0, TimeZone.getTimeZone("UTC").toZoneId());
+        List<TimeEntry> entries = jToggl.getTimeEntries(dt, dt);
 
         Assert.assertTrue(entries.isEmpty());
     }
@@ -244,11 +248,11 @@ public class JTogglTest {
         TimeEntry entry = new TimeEntry();
         entry.setDuration(480);
         entry.setBillable(true);
-        Calendar cal = Calendar.getInstance();
-        cal.set(2011, 10, 15, 8, 0);
-        entry.setStart(cal.getTime());
-        cal.set(2011, 10, 15, 16, 0);
-        entry.setStop(cal.getTime());
+        ZoneId tz = TimeZone.getTimeZone("Europe/Moscow").toZoneId();
+        ZonedDateTime start = ZonedDateTime.of(2011, 10, 15, 8, 0, 0, 0, tz);
+        entry.setStart(start);
+        ZonedDateTime stop = ZonedDateTime.of(2011, 10, 15, 16, 0, 0, 0, tz);
+        entry.setStop(stop);
         entry.setDescription("From JUnit Test");
         entry.setCreated_with("JUnit");
 
