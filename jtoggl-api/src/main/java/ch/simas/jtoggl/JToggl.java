@@ -3,6 +3,8 @@
  *
  * Copyright (C) 2011 by simas GmbH, Moosentli 7, 3235 Erlach, Switzerland
  * http://www.simas.ch
+ *
+ * Copyright 2016 Aleksandr Duplishchev https://github.com/d-ai
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +20,8 @@
  */
 package ch.simas.jtoggl;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -45,6 +47,7 @@ import com.sun.jersey.core.util.MultivaluedMapImpl;
  * API Class for Toggl REST API.
  * 
  * @author Simon Martinelli
+ * @author Aleksandr Duplishchev
  */
 public class JToggl {
 
@@ -108,19 +111,19 @@ public class JToggl {
      * visible in the timer" under "My settings" in Toggl is used to determine 
      * which time entries to return but you can specify another date range using 
      * start_date and end_date parameters.
-     * 
-     * @param startDate
-     * @param endDate
+     *
+     * @param startDateTime
+     * @param endDateTime
      * @return list of {@link TimeEntry}
      */
-    public List<TimeEntry> getTimeEntries(Date startDate, Date endDate) {
+    public List<TimeEntry> getTimeEntries(ZonedDateTime startDateTime, ZonedDateTime endDateTime) {
         Client client = prepareClient();
         WebResource webResource = client.resource(TIME_ENTRIES);
 
-        if (startDate != null && endDate != null) {
+        if (startDateTime != null && endDateTime != null) {
             MultivaluedMap queryParams = new MultivaluedMapImpl();
-            queryParams.add("start_date", DateUtil.convertDateToString(startDate));
-            queryParams.add("end_date", DateUtil.convertDateToString(endDate));
+            queryParams.add("start_date", DateUtil.convertZonedDateTimeToString(startDateTime));
+            queryParams.add("end_date", DateUtil.convertZonedDateTimeToString(endDateTime));
             webResource = webResource.queryParams(queryParams);
         }
         String response = webResource.get(String.class);

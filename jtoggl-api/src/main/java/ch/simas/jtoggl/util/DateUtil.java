@@ -3,6 +3,8 @@
  *
  * Copyright (C) 2011 by simas GmbH, Moosentli 7, 3235 Erlach, Switzerland
  * http://www.simas.ch
+ *
+ * Copyright 2016 Aleksandr Duplishchev https://github.com/d-ai
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,44 +20,24 @@
  */
 package ch.simas.jtoggl.util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
- * 
+ *
  * @author Simon Martinelli
+ * @author Aleksandr Duplishchev
  */
 public class DateUtil {
+    private static final DateTimeFormatter FORMAT = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
-    public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
-
-    private DateUtil() {
-    }
-
-    public static Date convertStringToDate(String dateString) {
-		if (dateString == null)
+    public static ZonedDateTime convertStringToZonedDateTime(String dateTimeString) {
+		if (dateTimeString == null)
 			return null;
-		
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-        Date date = null;
-        try {
-            date = sdf.parse(dateString);
-        } catch (ParseException ex) {
-            Logger.getLogger(DateUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return date;
+        return ZonedDateTime.parse(dateTimeString, FORMAT);
     }
 
-    public static String convertDateToString(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-		int timezoneOffset = date.getTimezoneOffset();
-		int hour = Math.abs(timezoneOffset / 60);
-		int min = Math.abs(timezoneOffset % 60);
-		String dateTime = sdf.format(date);
-		String timeOffset = (timezoneOffset <= 0 ? "+" : "-") + (hour < 10 ? "0" : "") + hour + ":" + (min < 10 ? "0" : "") + min;
-		return dateTime + timeOffset;
+    public static String convertZonedDateTimeToString(ZonedDateTime zonedDateTime) {
+        return zonedDateTime.format(FORMAT);
     }
 }

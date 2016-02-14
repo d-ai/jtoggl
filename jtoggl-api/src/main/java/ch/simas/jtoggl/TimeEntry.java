@@ -3,7 +3,9 @@
  *
  * Copyright (C) 2011 by simas GmbH, Moosentli 7, 3235 Erlach, Switzerland
  * http://www.simas.ch
- * 
+ *
+ * Copyright 2016 Aleksandr Duplishchev https://github.com/d-ai
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,8 +20,8 @@
  */
 package ch.simas.jtoggl;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -31,14 +33,15 @@ import ch.simas.jtoggl.util.DateUtil;
 /**
  * 
  * @author Simon Martinelli
+ * @author Aleksandr Duplishchev
  */
 public class TimeEntry {
 
     private Long id;
     private String description;
     private Project project;
-    private Date start;
-    private Date stop;
+    private ZonedDateTime start;
+    private ZonedDateTime stop;
     private long duration;
     private Boolean billable;
     private Workspace workspace;
@@ -56,8 +59,8 @@ public class TimeEntry {
         JSONObject object = (JSONObject) JSONValue.parse(jsonString);
         this.id = (Long) object.get("id");
         this.description = (String) object.get("description");
-        this.start = DateUtil.convertStringToDate((String) object.get("start"));
-        this.stop = DateUtil.convertStringToDate((String) object.get("stop"));
+        this.start = DateUtil.convertStringToZonedDateTime((String) object.get("start"));
+        this.stop = DateUtil.convertStringToZonedDateTime((String) object.get("stop"));
         this.duration = (Long) object.get("duration");
         this.billable = (Boolean) object.get("billable");
         this.duronly = (Boolean) object.get("duronly");
@@ -136,19 +139,19 @@ public class TimeEntry {
 		this.pid = project.getId();
     }
 
-    public Date getStart() {
+    public ZonedDateTime getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(ZonedDateTime start) {
         this.start = start;
     }
 
-    public Date getStop() {
+    public ZonedDateTime getStop() {
         return stop;
     }
 
-    public void setStop(Date stop) {
+    public void setStop(ZonedDateTime stop) {
         this.stop = stop;
     }
 
@@ -219,10 +222,10 @@ public class TimeEntry {
             object.put("duronly", duronly);
         }
         if (start != null) {
-            object.put("start", DateUtil.convertDateToString(start));
+            object.put("start", DateUtil.convertZonedDateTimeToString(start));
         }
         if (stop != null) {
-            object.put("stop", DateUtil.convertDateToString(stop));
+            object.put("stop", DateUtil.convertZonedDateTimeToString(stop));
         }
         if (created_with != null) {
             object.put("created_with", created_with);
