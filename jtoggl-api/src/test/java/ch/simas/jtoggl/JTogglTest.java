@@ -196,11 +196,12 @@ public class JTogglTest {
 
     @Test
     public void updateProject() {
-        project.setBillable(true);
+        project.setName("JUnit Test Project");
+
         Project pr = jToggl.updateProject(project);
 
         Assert.assertNotNull(pr);
-        Assert.assertTrue(pr.isBillable());
+        Assert.assertTrue(pr.getName().equals("JUnit Test Project"));
     }
 
     @Test
